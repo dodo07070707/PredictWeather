@@ -101,3 +101,4 @@ average_pressure_change <- mean(filtered_changes_summary$기압변화량평균, 
 cat("풍속변화량평균의 평균:", average_wind_change, "\n")
 cat("습도변화량평균의 평균:", average_humidity_change, "\n")
 cat("기압변화량평균의 평균:", average_pressure_change, "\n")
+
