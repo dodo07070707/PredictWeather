@@ -102,3 +102,64 @@ cat("풍속변화량평균의 평균:", average_wind_change, "\n")
 cat("습도변화량평균의 평균:", average_humidity_change, "\n")
 cat("기압변화량평균의 평균:", average_pressure_change, "\n")
 
+# 기존 데이터는 그대로 유지한 상태에서 2024년 데이터는 별도로 불러오기
+data_2024 <- data.frame()
+
+# 2024년 데이터 불러오기
+file_name_2024 <- paste0("data/weather_", 2024, ".xlsx")
+file_path_2024 <- file.path(getwd(), file_name_2024)
+
+if (file.exists(file_path_2024)) {
+  data_2024 <- read_excel(file_path_2024)
+  
+  # NA 값을 0으로 변환
+  data_2024[is.na(data_2024)] <- 0
+
+  # Datetime 전처리
+  data_2024 <- data_2024 %>% mutate(across(everything(), as.character)) %>% separate(일시, into = c("날짜", "시각"), sep = " ")
+}
+
+# 2024년 데이터의 시각 변화량 계산 (기존 함수 재사용)
+changes_summary_2024 <- calculate_hourly_changes(data_2024)
+
+# 유사한 날씨 패턴 찾기 함수 정의 (기존 함수 재사용)
+find_similar_weather <- function(data, target_wind, target_humidity, target_pressure, tolerance = 0.1) {
+  similar_dates <- data %>%
+    filter(
+      abs(풍속변화량평균 - target_wind) <= tolerance,
+      abs(습도변화량평균 - target_humidity) <= tolerance,
+      abs(기압변화량평균 - target_pressure) <= tolerance
+    )
+  return(similar_dates)
+}
+
+# 예측 평가 함수 정의 (기존 함수 재사용)
+evaluate_predictions <- function(similar_dates, original_data) {
+  correct_predictions <- 0
+  
+  for (date in similar_dates$날짜) {
+    next_day <- as.character(as.Date(date) + 1)
+    
+    # 다음날 실제 강수량 확인
+    if (next_day %in% original_data$날짜) {
+      actual_rain <- as.numeric(original_data$강수량[original_data$날짜 == next_day])
+      if (actual_rain > 0) {
+        correct_predictions <- correct_predictions + 1
+      }
+    }
+  }
+  
+  total_predictions <- nrow(similar_dates)
+  accuracy <- ifelse(total_predictions > 0, correct_predictions / total_predictions, NA)
+  
+  return(accuracy)
+}
+
+# 2024년 데이터에서 과거 데이터와 유사한 날씨 패턴 찾기
+similar_weather_2024 <- find_similar_weather(changes_summary_2024, average_wind_change, average_humidity_change, average_pressure_change)
+
+# 유사한 패턴을 가진 날씨의 다음날 비가 올 확률 평가
+accuracy <- evaluate_predictions(similar_weather_2024, data_2024)
+
+# 결과 출력
+cat("2024년 유사한 날씨 패턴의 비 예측 정확도:", accuracy * 100, "%\n")
