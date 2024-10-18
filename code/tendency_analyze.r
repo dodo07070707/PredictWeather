@@ -151,7 +151,7 @@ unique_times <- unique(data_2024$시각)
 changes_summary_2024 <- calculate_hourly_changes(data_2024)
 
 # 유사한 날씨 패턴 찾기 함수 정의 (기존 함수 재사용)
-find_similar_weather <- function(data, target_wind, target_humidity, target_pressure, tolerance = 0.07) {
+find_similar_weather <- function(data, target_wind, target_humidity, target_pressure, tolerance = 0) {
   print(target_wind)
   print(target_humidity)
   print(target_pressure)
