@@ -233,7 +233,7 @@ similar_weather_2024 <- find_similar_weather(changes_summary_2024, average_wind_
 accuracy <- evaluate_predictions(similar_weather_2024, data_2024)
 
 # 결과 출력
-cat("총 분석일 수 (2014~2023) : ",nrow(combined_data), "일","\n")
+cat("총 분석자료 개수 (2014~2023) : ",nrow(combined_data), "일","\n")
 cat("최종 강수 예측 정확도:", ifelse(is.na(accuracy), "데이터 부족", paste0(accuracy * 100, "%")), "\n")
 
 #print(changes_summary_2024)
