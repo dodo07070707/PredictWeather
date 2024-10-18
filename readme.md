@@ -7,7 +7,7 @@
 **Used Stack**
 R  
 **Model Accuracy**
-UNKNOWN  
+67.010309%  
 
 
 # 필요한 라이브러리 불러오기
@@ -16,11 +16,13 @@ install.packages("readxl")  # readxl 패키지 설치
 install.packages("dplyr")    # dplyr 패키지 설치
 install.packages("ggplot2") # ggplot2 패키치 설치
 install.packages("tidyr") # tidyr 패키지 설치
-install.packages("writexl") # tidyr 패키지 설치
+install.packages("httpgd") # httpgd 패키지 설치
+install.packages("stringr") # stringr 패키지 설치
 npm install axios exceljs #axios, exceljs 패키지 설치
 library(readxl)  # readxl 라이브러리 불러오기  
 library(dplyr)   # dplyr 라이브러리 불러오기
 library(ggplot2) # ggplot2 라이브러리 불러오기
 library(tidyr) # tidyr 라이브러리 불러오기 
-library(writexl) # tidyr 라이브러리 불러오기 
+library(httpgd) # httpgd 라이브러리 불러오기
+library(stringr) # stringr 라이브러리 불러오기 
 ```
